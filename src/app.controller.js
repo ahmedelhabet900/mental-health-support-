@@ -17,7 +17,7 @@ export const bootstrap = async (express, app) => {
       "http://localhost:3000",
       "http://localhost:3001",
       "http://localhost:5173",
-      "https://e-commerce-flax-xi.vercel.app",
+      
     ],
 
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
