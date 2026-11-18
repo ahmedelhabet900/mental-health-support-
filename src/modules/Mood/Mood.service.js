@@ -1,4 +1,4 @@
-import Mood from "../../DB/models/mood.model.js";
+import Mood from "../../DB/models/Mood.model.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 
 const getToday = () =>
