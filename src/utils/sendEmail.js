@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import { getOtpEmailHtml } from "../utils/Tempelet.js";
+import { getOtpEmailHtml } from "../utils/tempelet.js";
 
 const sendEmail = async (email, subject, otp) => {
   const transportrt = nodemailer.createTransport({
