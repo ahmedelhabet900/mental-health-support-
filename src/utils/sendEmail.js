@@ -1,28 +1,28 @@
-import nodemailer from "nodemailer";
-import { getOtpEmailHtml } from "../utils/tempelet.js";
+// import nodemailer from "nodemailer";
+// import { getOtpEmailHtml } from "../utils/tempelet.js";
 
-const sendEmail = async (email, subject, otp) => {
-  const transportrt = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
-    auth: {
-      user: "ahmedelhabet900@gmail.com",
-      pass: "lczx jlai iplz lpyr",
-    },
-  });
+// const sendEmail = async (email, subject, otp) => {
+//   const transportrt = nodemailer.createTransport({
+//     host: "smtp.gmail.com",
+//     port: 465,
+//     secure: true,
+//     auth: {
+//       user: "ahmedelhabet900@gmail.com",
+//       pass: "lczx jlai iplz lpyr",
+//     },
+//   });
 
-  const info = await transportrt.sendMail({
-    from: `"Reveal" <ahmedelhabet900@gmail.com>`,
-    to: email,
-    subject,
-    html: getOtpEmailHtml(otp),
-  });
+//   const info = await transportrt.sendMail({
+//     from: `"MIORA" <ahmedelhabet900@gmail.com>`,
+//     to: email,
+//     subject,
+//     html: getOtpEmailHtml(otp),
+//   });
 
-  console.log("Message sent: %s", info.messageId);
-};
+//   console.log("Message sent: %s", info.messageId);
+// };
 
-export default sendEmail;
+// export default sendEmail;
 
 // import nodemailer from "nodemailer";
 // import { getOtpEmailHtml } from "./template.js";
@@ -44,8 +44,6 @@ export default sendEmail;
 // };
 
 // export default sendEmail;
-
-
 
 // import nodemailer from "nodemailer";
 // import { getOtpEmailHtml } from "./tempelet.js";
@@ -81,3 +79,27 @@ export default sendEmail;
 // };
 
 // export default sendEmail;
+// utils/sendEmail.js
+import { getOtpEmailHtml } from "../utils/tempelet.js";
+
+const sendEmail = async (email, subject, otp) => {
+  const res = await fetch("https://api.brevo.com/v3/smtp/email", {
+    method: "POST",
+    headers: {
+      "api-key": process.env.BREVO_API_KEY,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      sender: { name: "MIORA", email: process.env.EMAIL_FROM },
+      to: [{ email }],
+      subject,
+      htmlContent: getOtpEmailHtml(otp),
+    }),
+  });
+
+  if (!res.ok) {
+    throw new Error(`Email failed: ${res.status} ${await res.text()}`);
+  }
+};
+
+export default sendEmail;
