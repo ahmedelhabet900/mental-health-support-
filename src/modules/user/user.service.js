@@ -78,8 +78,10 @@ export const Register = asyncHandler(async (req, res, next) => {
 
 export const verifyOtp = asyncHandler(async (req, res, next) => {
   const { email, otp } = req.body;
+  console.log("1 verify start");
 
   const otpRecord = await OTP.findOne({ email });
+  console.log("2 otp quary done");
   if (!otpRecord) {
     return res
       .status(400)
@@ -91,6 +93,7 @@ export const verifyOtp = asyncHandler(async (req, res, next) => {
   }
 
   const existingUser = await User.findOne({ email });
+  console.log("3 user check done");
   if (existingUser) {
     await OTP.deleteOne({ _id: otpRecord._id });
     return res
@@ -110,8 +113,10 @@ export const verifyOtp = asyncHandler(async (req, res, next) => {
 
   user.$locals.skipHash = true;
   await user.save();
+  console.log("4 user saved");
 
   await OTP.deleteOne({ _id: otpRecord._id });
+  console.log("5 otp deleted");
 
   return res.status(201).json({
     success: true,
@@ -158,7 +163,6 @@ export const login = asyncHandler(async (req, res, next) => {
   const isMatch = compareSynchash({
     plantext: password,
     hash: user.password,
-   
   });
   if (!isMatch) {
     return res
